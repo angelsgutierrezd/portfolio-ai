@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { ArrowUpRight, ArrowRight, Mail, Linkedin, Github, Menu, X } from 'lucide-react';
 
 export default function Home() {
@@ -81,14 +82,14 @@ export default function Home() {
             {/* Stack 2 — Photo + Product Designer */}
             <div className="flex items-center gap-3 mb-6">
               {/* Profile photo — 136x136, square with 8px radius */}
-              <div className="overflow-hidden flex-shrink-0 bg-neutral-600" style={{ width: '136px', height: '136px', borderRadius: '8px' }}>
-                <img
+              <div className="overflow-hidden flex-shrink-0" style={{ width: '136px', height: '136px', borderRadius: '8px' }}>
+                <Image
                   src="/profile.jpg"
                   alt="Angels Gutierrez"
-                  className="w-full h-full object-cover grayscale"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
+                  width={136}
+                  height={136}
+                  className="object-cover grayscale"
+                  priority
                 />
               </div>
               <span
