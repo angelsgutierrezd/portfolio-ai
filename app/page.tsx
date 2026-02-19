@@ -1,46 +1,153 @@
 "use client";
 
-import { ArrowUpRight, Mail, Linkedin, Github } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, ArrowRight, Mail, Linkedin, Github, Menu, X } from 'lucide-react';
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <main className="min-h-screen bg-neutral-50 text-neutral-900">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-neutral-50/80 backdrop-blur-sm border-b border-neutral-200 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a href="#" className="text-lg font-medium">Angels Gutierrez</a>
-          <div className="flex gap-8 text-sm">
-            <a href="#work" className="hover:text-neutral-600 transition-colors">Work</a>
-            <a href="#services" className="hover:text-neutral-600 transition-colors">Services</a>
-            <a href="#contact" className="hover:text-neutral-600 transition-colors">Contact</a>
+      <nav className="fixed top-0 w-full z-50" style={{ backgroundColor: '#282828' }}>
+        <div className="max-w-6xl mx-auto flex justify-between items-center" style={{ padding: '16px' }}>
+          {/* a:9 Logo — 40x40 orange circle, Libre Baskerville Bold 20pt */}
+          <a href="#" className="flex items-center justify-center rounded-full" style={{ width: '40px', height: '40px', backgroundColor: '#FF6700', fontFamily: 'var(--font-libre-baskerville)', fontSize: '20px', fontWeight: 700, color: '#171717' }}>
+            a:9
+          </a>
+
+          {/* Desktop nav links — Manrope SemiBold 18pt, gap 40px */}
+          <div className="hidden md:flex items-center text-neutral-300" style={{ gap: '40px' }}>
+            <a href="#work" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Work</a>
+            <a href="#services" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Services</a>
+            <a href="#about" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>About</a>
           </div>
+
+          {/* Hamburger (mobile) */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
+
+        {/* Mobile menu — Manrope SemiBold 18pt */}
+        {menuOpen && (
+          <div className="md:hidden pb-6 flex flex-col gap-5 text-neutral-300" style={{ padding: '0 16px 24px' }}>
+            <a href="#work" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Work</a>
+            <a href="#services" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Services</a>
+            <a href="#about" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>About</a>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-start gap-4 mb-6">
-            <span className="text-2xl">👋</span>
-            <p className="text-neutral-600 text-lg">¡Hola! I'm Angels</p>
+      <section className="min-h-screen flex flex-col justify-between px-6 pt-28 pb-12" style={{ backgroundColor: '#282828' }}>
+        <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col items-center justify-center text-center">
+          {/* Stacks wrapper — single coordinate system */}
+          <div className="self-center inline-flex flex-col">
+            {/* Stack 1 — left edge at photo center: 68px from Stack 2 left */}
+            <div className="mb-3 text-left" style={{ paddingLeft: '68px' }}>
+              {/* AI-Powered Designer tag */}
+              <span className="inline-flex items-center gap-1.5 text-xs tracking-wide uppercase mb-4 px-3 py-1 rounded-full border" style={{ color: '#FF6700', borderColor: '#FF670040' }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#FF6700' }} />
+                AI-Powered Designer
+              </span>
+              <p className="mb-2" style={{ fontFamily: 'var(--font-libre-baskerville)', fontSize: '24px', fontWeight: 400, color: '#BCBCBC' }}>
+                ¡Hola! I&apos;m{' '}
+                <span style={{ color: '#FF6700' }}>
+                  <span style={{ fontWeight: 700 }}>angels</span><span style={{ fontWeight: 400 }}>gutierrez</span>
+                </span>
+              </p>
+              <span
+                className="inline-flex items-center rounded-xl"
+                style={{
+                  fontFamily: 'var(--font-manrope)',
+                  fontSize: '84px',
+                  fontWeight: 500,
+                  lineHeight: '140%',
+                  color: '#171717',
+                  backgroundColor: '#FF6700',
+                  padding: '10px 20px',
+                  height: '136px',
+                }}
+              >
+                Freelance
+              </span>
+            </div>
+
+            {/* Stack 2 — Photo + Product Designer */}
+            <div className="flex items-center gap-3 mb-6">
+              {/* Profile photo — 136x136, square with 8px radius */}
+              <div className="overflow-hidden flex-shrink-0 bg-neutral-600" style={{ width: '136px', height: '136px', borderRadius: '8px' }}>
+                <img
+                  src="/profile.jpg"
+                  alt="Angels Gutierrez"
+                  className="w-full h-full object-cover grayscale"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+              <span
+                className="inline-flex items-center rounded-xl"
+                style={{
+                  fontFamily: 'var(--font-manrope)',
+                  fontSize: '84px',
+                  fontWeight: 500,
+                  lineHeight: '140%',
+                  color: '#171717',
+                  backgroundColor: '#FF6700',
+                  padding: '10px 20px',
+                  height: '136px',
+                }}
+              >
+                Product designer
+              </span>
+            </div>
+
+            {/* Tagline + Subtitle — left-aligned to Product Designer (136px photo + 12px gap = 148px) */}
+            <div className="text-left" style={{ paddingLeft: '148px' }}>
+              <p className="mb-2" style={{ fontFamily: 'var(--font-manrope)', fontSize: '24px', color: '#FFFFFF' }}>
+                <span style={{ fontWeight: 300 }}>I turn ideas into </span>
+                <span style={{ fontWeight: 500 }}>digital products users love</span>
+                <span style={{ fontWeight: 300 }}> (and pay for)</span>
+              </p>
+
+              <p style={{ fontFamily: 'var(--font-manrope)', fontSize: '20px', color: '#BCBCBC' }}>
+                <span style={{ fontWeight: 300 }}>Flexible design partner — </span>
+                <span style={{ fontWeight: 800 }}>focused on results.</span>
+              </p>
+            </div>
           </div>
-          
-          <h1 className="text-6xl md:text-7xl font-medium mb-6 leading-tight">
-            I turn ideas into products<br />
-            users love <span className="text-neutral-500">(and pay for)</span>
-          </h1>
-          
-          <p className="text-xl text-neutral-600 mb-12 max-w-2xl">
-            Flexible design partner — focused on results. AI-native product designer working with startups and scale-ups.
-          </p>
-          
-          <a 
-            href="#contact" 
-            className="inline-flex items-center gap-2 bg-neutral-900 text-white px-6 py-3 rounded-lg hover:bg-neutral-800 transition-colors"
+        </div>
+
+        {/* Bottom CTA + text */}
+        <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
+          <a
+            href="#contact"
+            className="inline-flex items-center rounded-xl transition-colors hover:opacity-90"
+            style={{
+              fontFamily: 'var(--font-manrope)',
+              fontSize: '18px',
+              fontWeight: 500,
+              color: '#171717',
+              backgroundColor: '#FF6700',
+              padding: '16px 24px',
+              height: '48px',
+              gap: '4px',
+            }}
           >
             Get in touch
-            <ArrowUpRight size={18} />
+            <ArrowRight size={18} />
           </a>
+
+          <p className="mt-4" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', color: '#FFFFFF' }}>
+            <span style={{ fontWeight: 300 }}>Great ideas start with a conversation. </span>
+            <span style={{ fontWeight: 500 }}>Shall we talk?</span>
+          </p>
         </div>
       </section>
 
