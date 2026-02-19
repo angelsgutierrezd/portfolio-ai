@@ -50,20 +50,20 @@ export default function Home() {
           {/* Stacks wrapper — single coordinate system */}
           <div className="self-center inline-flex flex-col">
             {/* Stack 1 — left edge at photo center: 68px from Stack 2 left */}
-            <div className="mb-3 text-left" style={{ paddingLeft: '68px' }}>
+            <div className="hero-stack1 mb-3 text-left" style={{ paddingLeft: '68px' }}>
               {/* AI-Powered Designer tag */}
               <span className="inline-flex items-center gap-1.5 text-xs tracking-wide uppercase mb-4 px-3 py-1 rounded-full border" style={{ color: '#FF6700', borderColor: '#FF670040' }}>
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#FF6700' }} />
                 AI-Powered Designer
               </span>
-              <p className="mb-2" style={{ fontFamily: 'var(--font-libre-baskerville)', fontSize: '24px', fontWeight: 400, color: '#FFFFFF' }}>
+              <p className="hero-greeting mb-2" style={{ fontFamily: 'var(--font-libre-baskerville)', fontSize: '24px', fontWeight: 400, color: '#FFFFFF' }}>
                 ¡Hola! I&apos;m{' '}
                 <span style={{ color: '#FF6700' }}>
                   <span style={{ fontWeight: 700 }}>angels</span><span style={{ fontWeight: 400 }}>gutierrez</span>
                 </span>
               </p>
               <span
-                className="inline-flex items-center rounded-xl"
+                className="hero-block inline-flex items-center"
                 style={{
                   fontFamily: 'var(--font-manrope)',
                   fontSize: '84px',
@@ -73,6 +73,7 @@ export default function Home() {
                   backgroundColor: '#FF6700',
                   padding: '10px 20px',
                   height: '136px',
+                  borderRadius: '10px',
                 }}
               >
                 Freelance
@@ -80,9 +81,9 @@ export default function Home() {
             </div>
 
             {/* Stack 2 — Photo + Product Designer */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="hero-stack2 flex items-center gap-3 mb-6">
               {/* Profile photo — 136x136, square with 8px radius */}
-              <div className="overflow-hidden flex-shrink-0" style={{ width: '136px', height: '136px', borderRadius: '8px' }}>
+              <div className="hero-photo overflow-hidden flex-shrink-0" style={{ width: '136px', height: '136px', borderRadius: '8px' }}>
                 <Image
                   src="/profile.jpg"
                   alt="Angels Gutierrez"
@@ -93,7 +94,7 @@ export default function Home() {
                 />
               </div>
               <span
-                className="inline-flex items-center rounded-xl"
+                className="hero-block inline-flex items-center"
                 style={{
                   fontFamily: 'var(--font-manrope)',
                   fontSize: '84px',
@@ -103,6 +104,7 @@ export default function Home() {
                   backgroundColor: '#FF6700',
                   padding: '10px 20px',
                   height: '136px',
+                  borderRadius: '10px',
                 }}
               >
                 Product designer
@@ -110,14 +112,15 @@ export default function Home() {
             </div>
 
             {/* Tagline + Subtitle — left-aligned to Product Designer (136px photo + 12px gap = 148px) */}
-            <div className="text-left" style={{ paddingLeft: '148px' }}>
-              <p className="mb-2" style={{ fontFamily: 'var(--font-manrope)', fontSize: '24px', color: '#FFFFFF' }}>
+            <div className="hero-tagline text-left" style={{ paddingLeft: '148px' }}>
+              <p className="hero-tagline-text mb-2" style={{ fontFamily: 'var(--font-manrope)', fontSize: '24px', color: '#FFFFFF' }}>
                 <span style={{ fontWeight: 300 }}>I turn ideas into </span>
                 <span style={{ fontWeight: 500 }}>digital products users love</span>
-                <span style={{ fontWeight: 300 }}> (and pay for)</span>
+                <br className="md:hidden" />
+                <span style={{ fontWeight: 300 }}>(and pay for)</span>
               </p>
 
-              <p style={{ fontFamily: 'var(--font-manrope)', fontSize: '20px', color: '#BCBCBC' }}>
+              <p className="hero-subtitle" style={{ fontFamily: 'var(--font-manrope)', fontSize: '20px', color: '#BCBCBC' }}>
                 <span style={{ fontWeight: 300 }}>Flexible design partner — </span>
                 <span style={{ fontWeight: 800 }}>focused on results.</span>
               </p>
@@ -129,7 +132,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
           <a
             href="#contact"
-            className="inline-flex items-center rounded-xl transition-colors hover:opacity-90"
+            className="hero-cta inline-flex items-center rounded-xl transition-colors hover:opacity-90"
             style={{
               fontFamily: 'var(--font-manrope)',
               fontSize: '18px',
@@ -152,15 +155,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Banner */}
-      <section className="border-y border-neutral-200 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 overflow-hidden">
-          <div className="flex gap-12 text-sm text-neutral-600 whitespace-nowrap animate-scroll">
-            <span>✦ 1.4x faster transaction completion</span>
-            <span>✦ Make existing data actionable</span>
-            <span>✦ AI agent saving restaurateurs 30 hours/month</span>
-            <span>✦ 1.4x faster transaction completion</span>
-            <span>✦ Make existing data actionable</span>
+      {/* Marquee Ticker */}
+      <section className="bg-white" style={{ borderTop: '1px solid #FEA060', borderBottom: '1px solid #FEA060' }}>
+        <p className="text-center py-3" style={{ fontFamily: 'var(--font-manrope)', fontSize: '14px', fontWeight: 400, color: '#666666' }}>
+          Why top companies invest in design
+        </p>
+        <div className="marquee-wrap overflow-hidden" style={{ borderTop: '1px solid #FEA060' }}>
+          <div className="marquee-track flex whitespace-nowrap" style={{ fontFamily: 'var(--font-manrope)', fontSize: '14px', color: '#444444' }}>
+            <TickerContent />
+            <TickerContent aria-hidden="true" />
           </div>
         </div>
       </section>
@@ -325,6 +328,27 @@ export default function Home() {
 }
 
 // ---------- Components ----------
+
+const SEP = <span style={{ color: '#BCBCBC' }}>✳</span>;
+
+function TickerContent(props: React.HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span className="marquee-content flex items-center gap-6 px-6 py-3" {...props}>
+      <span><span style={{ fontWeight: 500 }}>+20% to +200% conversions</span> with optimized interfaces <a href="https://www.nngroup.com/articles/usability-roi-declining-but-still-strong/" target="_blank" rel="noopener noreferrer" className="underline">Forrester | Nielsen Norman Group</a></span>
+      {SEP}
+      <span><span style={{ fontWeight: 500 }}>-10% to -25% churn</span> through clear, user-friendly experiences <a href="https://arxiv.org/abs/2203.04374" target="_blank" rel="noopener noreferrer" className="underline">based on industry benchmarks for improved retention through clearer experiences</a></span>
+      {SEP}
+      <span><span style={{ fontWeight: 500 }}>30-50%</span> faster launches using design systems &amp; reusable components <a href="https://richardmbanfield.medium.com/design-systems-as-innovation-profit-drivers-creating-value-by-moving-beyond-adoption-metrics-e25dd689a534" target="_blank" rel="noopener noreferrer" className="underline">UX Collective</a></span>
+      {SEP}
+      <span><span style={{ fontWeight: 500 }}>-40% support tickets</span> thanks to improved UX <a href="https://medium.com/design-bootcamp/design-system-boosts-efficiency-up-to-7-times-c7a634f9f76b" target="_blank" rel="noopener noreferrer" className="underline">UX Planet</a></span>
+      {SEP}
+      <span><span style={{ fontWeight: 500 }}>+228% growth</span> for companies investing in UX <a href="https://www.dmi.org/page/DesignValue" target="_blank" rel="noopener noreferrer" className="underline">UX Planet</a></span>
+      {SEP}
+      <span><span style={{ fontWeight: 500 }}>+10 to +25 NPS points</span> from consistent, polished UX <a href="https://www.netpromotersystem.com/about/" target="_blank" rel="noopener noreferrer" className="underline">Bain &amp; Company</a></span>
+      {SEP}
+    </span>
+  );
+}
 
 function WorkCard({ title, description, metric, tags }: { title: string; description: string; metric: string; tags: string[] }) {
   return (
