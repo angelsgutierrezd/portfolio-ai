@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Roobert';
+  src: url('/fonts/Roobert-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Silka';
+  src: url('/fonts/Silka-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -36,6 +52,60 @@ body {
   .marquee-content {
     flex-shrink: 0;
   }
+}
+
+/* ── Navbar color states ── */
+@layer base {
+  .nav-transition {
+    transition: color 0.4s ease, background-color 0.4s ease;
+  }
+  .nav-dark {
+    background-color: #282828;
+  }
+
+  .nav-dark .nav-logo {
+    color: #171717;
+  }
+
+  .nav-dark .nav-link {
+    color: #D4D4D4;
+  }
+
+  .nav-dark .nav-link:hover {
+    color: #FFFFFF;
+  }
+
+  .nav-dark .nav-hamburger {
+    color: #FFFFFF;
+  }
+
+  .nav-light {
+    background-color: #F5F5F5;
+  }
+
+  .nav-light .nav-logo {
+    color: #FFFFFF;
+  }
+
+  .nav-light .nav-link {
+    color: #444444;
+  }
+
+  .nav-light .nav-link:hover {
+    color: #171717;
+  }
+
+  .nav-light .nav-hamburger {
+    color: #171717;
+  }
+}
+
+.featured-title {
+  font-size: 64px;
+}
+
+.currently-title {
+  font-size: 64px;
 }
 
 /* ── Mobile hero overrides (max-width: 768px) ── */
@@ -87,6 +157,15 @@ body {
   .hero-cta {
     width: 100% !important;
     justify-content: center;
+  }
+
+  /* Featured projects title */
+  .featured-title {
+    font-size: 40px !important;
+  }
+
+  .currently-title {
+    font-size: 28px !important;
   }
 }
 }

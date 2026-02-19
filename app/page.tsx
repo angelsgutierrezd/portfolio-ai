@@ -1,32 +1,51 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { ArrowUpRight, ArrowRight, Mail, Linkedin, Github, Menu, X } from 'lucide-react';
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navDark, setNavDark] = useState(true);
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setNavDark(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '-72px 0px 0px 0px' }
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <main className="min-h-screen bg-neutral-50 text-neutral-900">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50" style={{ backgroundColor: '#282828' }}>
+      <nav
+        className={`nav-bar fixed top-0 w-full z-50 nav-transition ${navDark ? 'nav-dark' : 'nav-light'}`}
+      >
         <div className="max-w-6xl mx-auto flex justify-between items-center" style={{ padding: '16px' }}>
           {/* a:9 Logo — 40x40 orange circle, Libre Baskerville Bold 20pt */}
-          <a href="#" className="flex items-center justify-center rounded-full" style={{ width: '40px', height: '40px', backgroundColor: '#FF6700', fontFamily: 'var(--font-libre-baskerville)', fontSize: '20px', fontWeight: 700, color: '#171717' }}>
+          <a href="#" className="nav-logo flex items-center justify-center rounded-full nav-transition" style={{ width: '40px', height: '40px', backgroundColor: '#FF6700', fontFamily: 'var(--font-libre-baskerville)', fontSize: '20px', fontWeight: 700 }}>
             a:9
           </a>
 
           {/* Desktop nav links — Manrope SemiBold 18pt, gap 40px */}
-          <div className="hidden md:flex items-center text-neutral-300" style={{ gap: '40px' }}>
-            <a href="#work" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Work</a>
-            <a href="#services" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Services</a>
-            <a href="#about" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>About</a>
+          <div className="nav-links hidden md:flex items-center nav-transition" style={{ gap: '40px' }}>
+            <a href="#work" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Work</a>
+            <a href="#services" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>Services</a>
+            <a href="#about" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }}>About</a>
           </div>
 
           {/* Hamburger (mobile) */}
           <button
-            className="md:hidden text-white"
+            className="nav-hamburger md:hidden nav-transition"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -36,16 +55,16 @@ export default function Home() {
 
         {/* Mobile menu — Manrope SemiBold 18pt */}
         {menuOpen && (
-          <div className="md:hidden pb-6 flex flex-col gap-5 text-neutral-300" style={{ padding: '0 16px 24px' }}>
-            <a href="#work" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Work</a>
-            <a href="#services" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Services</a>
-            <a href="#about" className="hover:text-white transition-colors" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>About</a>
+          <div className="md:hidden pb-6 flex flex-col gap-5" style={{ padding: '0 16px 24px' }}>
+            <a href="#work" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Work</a>
+            <a href="#services" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>Services</a>
+            <a href="#about" className="nav-link nav-transition" style={{ fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 600 }} onClick={() => setMenuOpen(false)}>About</a>
           </div>
         )}
       </nav>
 
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col justify-between px-6 pt-28 pb-12" style={{ backgroundColor: '#282828' }}>
+      <section ref={heroRef} className="min-h-screen flex flex-col justify-between px-6 pt-28 pb-12" style={{ backgroundColor: '#282828' }}>
         <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col items-center justify-center text-center">
           {/* Stacks wrapper — single coordinate system */}
           <div className="self-center inline-flex flex-col">
@@ -168,53 +187,94 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Selected Work */}
-      <section id="work" className="py-24 px-6">
+      {/* Featured Projects */}
+      <section id="work" className="py-24 px-6" style={{ backgroundColor: '#F5F5F5' }}>
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-sm uppercase tracking-wider text-neutral-500 mb-12">Selected Work</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <WorkCard 
-              title="Fina AI Agent"
-              description="Financial AI assistant for restaurants"
-              metric="30h/month saved"
-              tags={["AI", "B2B", "SaaS"]}
+          <h2 className="featured-title text-center md:text-center mb-16" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 300, color: '#171717' }}>
+            Featured projects
+          </h2>
+
+          <div className="flex flex-col gap-12 mx-auto" style={{ width: '90%' }}>
+            <ProjectCard
+              code="P01"
+              label="Next-Gen POS"
+              title="Optimization the point-of-sale experience for high-volume retail"
+              tags={["Tablet & mobile", "2025", "SaaS"]}
+              image="/projects/p01.png"
+              href="#"
             />
-            <WorkCard 
-              title="Stocktaking Platform"
-              description="Multi-platform inventory management"
-              metric="1.4x faster completion"
-              tags={["Product Design", "Web + Mobile"]}
+            <ProjectCard
+              code="P02"
+              label="Analytics Dashboard"
+              title="Transforming complex data structures into actionable business insights"
+              tags={["Data Viz", "B2B SaaS", "Dashboard design"]}
+              image="/projects/p02.png"
+              href="#"
             />
-            <WorkCard 
-              title="POS System"
-              description="Integrated point-of-sale for retail"
-              metric="12.4% conversion increase"
-              tags={["B2B", "Fintech"]}
-            />
-            <WorkCard 
-              title="Data Dashboard"
-              description="Making existing data actionable"
-              metric="Improved decision-making"
-              tags={["Analytics", "Enterprise"]}
+            <ProjectCard
+              code="P03"
+              label="Frictionless User Acquisition"
+              title="Streamlining the onboarding journey to drive platform adoption"
+              tags={["Desktop", "Growth project", "Dashboard design"]}
+              image="/projects/p03.png"
+              href="#"
             />
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Currently Shaping */}
+      <section className="py-20 px-6" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="max-w-6xl mx-auto">
+          <h2 className="currently-title text-center mb-16" style={{ fontFamily: 'var(--font-manrope)', fontWeight: 300, color: '#444444' }}>
+            + currently shaping
+          </h2>
+
+          <div className="flex flex-col md:flex-row gap-6 mx-auto" style={{ width: '90%' }}>
+            <ShapingCard
+              tag="AI strategy"
+              description={<>Designing autonomous <strong>AI agents</strong> to automate financial operations for restaurant groups</>}
+              company="haddock"
+              companyFont="'Roobert', var(--font-manrope), sans-serif"
+            />
+            <ShapingCard
+              tag="Core experience"
+              description={<>Reframing <strong>core functionalities</strong> to build a friction-free ecosystem for omnichannel retail</>}
+              company="stockagile"
+              companyFont="'Silka', var(--font-manrope), sans-serif"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Referrals */}
       <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-sm uppercase tracking-wider text-neutral-500 mb-12">What clients say</h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <Testimonial 
-              quote="Angels adapted to our pace and delivered designs that directly impacted our revenue."
-              author="Founder, Haddock"
+          <h2 style={{ fontFamily: 'var(--font-inter)', fontStyle: 'italic', fontSize: '14px', fontWeight: 400, letterSpacing: '0.25em', textTransform: 'uppercase' as const, color: '#999999', marginBottom: '48px' }}>
+            Trusted by the best teams
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <ReferralCard
+              quote={<>Angels handles <strong>complex UX challenges</strong> with <strong>leadership</strong> and <strong>adaptability</strong>, turning complexity into <strong>meaningful, user-centered products</strong></>}
+              name="Val Y."
+              role="EMEA Team Manager & transformation leader"
+              company="Red Hat 2023"
+              photo="/referrals/val.png"
             />
-            <Testimonial 
-              quote="Like having a senior designer embedded in the team. Reliable and result-driven."
-              author="Product Lead, SaaS Startup"
+            <ReferralCard
+              quote={<>She quickly understands client needs and translates them into <strong>developer-friendly designs</strong> that are <strong>structured, consistent, and user-centered</strong>.</>}
+              name="Asier E."
+              role="App Developer & Software Engineer"
+              company="Stockagile 2025"
+              photo="/referrals/asier.png"
+            />
+            <ReferralCard
+              quote={<>Working with her was <strong>seamless</strong>—she is a <strong>reliable, expert, and genuinely collaborative</strong> designer who involves you in every step.</>}
+              name="Silvia d. M."
+              role="Psychologist"
+              company="Website section 2025"
+              photo="/referrals/silvia.png"
             />
           </div>
         </div>
@@ -329,6 +389,89 @@ export default function Home() {
 
 // ---------- Components ----------
 
+function ProjectCard({ code, label, title, tags, image, href }: {
+  code: string;
+  label: string;
+  title: string;
+  tags: string[];
+  image: string;
+  href: string;
+}) {
+  return (
+    <div className="flex flex-col md:flex-row overflow-hidden" style={{ borderRadius: '20px', boxShadow: '0px 4px 20px rgba(203, 203, 203, 0.5)' }}>
+      {/* Left — Text */}
+      <div className="md:w-1/2 bg-white p-8 md:p-12 flex flex-col justify-center">
+        <p className="mb-3" style={{ fontFamily: 'var(--font-manrope)', fontSize: '14px', fontWeight: 400, color: '#999999' }}>
+          {code} - {label}
+        </p>
+        <h3 className="mb-6" style={{ fontFamily: 'var(--font-manrope)', fontSize: '32px', fontWeight: 500, color: '#171717', lineHeight: '130%' }}>
+          {title}
+        </h3>
+        <div className="flex flex-wrap gap-2 mb-8">
+          {tags.map(tag => (
+            <span
+              key={tag}
+              className="px-4 py-2"
+              style={{
+                fontFamily: 'var(--font-manrope)',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#444444',
+                backgroundColor: '#F6F4F2',
+                border: 'none',
+                borderRadius: '100px',
+              }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <a
+          href={href}
+          className="inline-flex items-center gap-2 md:mt-auto"
+          style={{ fontFamily: 'var(--font-manrope)', fontSize: '16px', fontWeight: 500, color: '#FF6700' }}
+        >
+          View full project
+          <ArrowRight size={18} />
+        </a>
+      </div>
+
+      {/* Right — Image */}
+      <div className="md:w-1/2 relative min-h-[300px] md:min-h-[500px]">
+        <Image
+          src={image}
+          alt={`${code} - ${label}`}
+          fill
+          className="object-cover"
+        />
+      </div>
+    </div>
+  );
+}
+
+function ShapingCard({ tag, description, company, companyFont }: {
+  tag: string;
+  description: React.ReactNode;
+  company: string;
+  companyFont: string;
+}) {
+  return (
+    <div className="flex-1 flex flex-col justify-between p-6 md:p-8" style={{ backgroundColor: '#FF6700', borderRadius: '16px', minHeight: '260px', boxShadow: '0 0 20px rgba(115, 115, 115, 0.25)' }}>
+      <div>
+        <span className="inline-block px-4 py-1.5 mb-5" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: '100px', fontFamily: 'var(--font-manrope)', fontSize: '18px', fontWeight: 300, color: '#444444' }}>
+          {tag}
+        </span>
+        <p style={{ fontFamily: 'var(--font-manrope)', fontSize: '20px', fontWeight: 500, color: '#000000', lineHeight: '150%' }}>
+          {description}
+        </p>
+      </div>
+      <p className="text-right mt-6" style={{ fontFamily: companyFont, fontSize: '24px', fontWeight: 600, color: '#FFFFFF' }}>
+        {company}
+      </p>
+    </div>
+  );
+}
+
 const SEP = <span style={{ color: '#BCBCBC' }}>✳</span>;
 
 function TickerContent(props: React.HTMLAttributes<HTMLSpanElement>) {
@@ -378,11 +521,29 @@ function WorkCard({ title, description, metric, tags }: { title: string; descrip
   );
 }
 
-function Testimonial({ quote, author }: { quote: string; author: string }) {
+function ReferralCard({ quote, name, role, company, photo }: { quote: React.ReactNode; name: string; role: string; company: string; photo: string }) {
   return (
-    <div className="p-8 border border-neutral-200 rounded-xl">
-      <p className="text-lg mb-4 text-neutral-700">"{quote}"</p>
-      <p className="text-sm text-neutral-500">— {author}</p>
+    <div className="rounded-2xl flex flex-col justify-between" style={{ backgroundColor: '#F5F5F5', padding: '40px 36px 36px' }}>
+      <p style={{ fontFamily: 'var(--font-inter)', fontStyle: 'italic', fontSize: '18px', lineHeight: 1.6, color: '#333333' }}>
+        {quote}
+      </p>
+
+      <div style={{ marginTop: '40px' }}>
+        <div style={{ width: '32px', height: '3px', backgroundColor: '#FF6700', marginBottom: '20px' }} />
+        <div className="flex items-center gap-3">
+          <Image
+            src={photo}
+            alt={name}
+            width={44}
+            height={44}
+            className="rounded-full object-cover"
+            style={{ width: '44px', height: '44px', filter: 'grayscale(100%)' }}
+          />
+          <p style={{ fontFamily: 'var(--font-manrope)', fontSize: '13px', color: '#888888', lineHeight: 1.4 }}>
+            {name} | {role} | {company}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
