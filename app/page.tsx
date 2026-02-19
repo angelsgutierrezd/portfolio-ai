@@ -56,7 +56,7 @@ export default function Home() {
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#FF6700' }} />
                 AI-Powered Designer
               </span>
-              <p className="mb-2" style={{ fontFamily: 'var(--font-libre-baskerville)', fontSize: '24px', fontWeight: 400, color: '#BCBCBC' }}>
+              <p className="mb-2" style={{ fontFamily: 'var(--font-libre-baskerville)', fontSize: '24px', fontWeight: 400, color: '#FFFFFF' }}>
                 ¡Hola! I&apos;m{' '}
                 <span style={{ color: '#FF6700' }}>
                   <span style={{ fontWeight: 700 }}>angels</span><span style={{ fontWeight: 400 }}>gutierrez</span>
